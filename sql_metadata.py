@@ -108,7 +108,7 @@ def get_query_columns(query: str) -> List[str]:
             # print('keyword', last_keyword)
         elif token.ttype is Name:
             # analyze the name tokens, column names and where condition values
-            if last_keyword in ['SELECT', 'WHERE', 'ORDER BY', 'ON'] \
+            if last_keyword in ['SELECT', 'WHERE', 'ORDER BY', 'ON', "DISTINCT"] \
                     and last_token.value.upper() not in ['AS']:
                 # print(last_keyword, last_token, token.value)
 
@@ -131,7 +131,7 @@ def get_query_columns(query: str) -> List[str]:
         elif token.ttype is Wildcard:
             # handle * wildcard in SELECT part, but ignore count(*)
             # print(last_keyword, last_token, token.value)
-            if last_keyword == 'SELECT' and last_token.value != '(':
+            if (last_keyword == 'SELECT' or last_keyword == 'DISTINCT') and last_token.value != '(':
 
                 if str(last_token) == '.':
                     # handle SELECT foo.*
